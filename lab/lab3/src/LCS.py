@@ -46,8 +46,8 @@ def print_lcs(b, x, i, j):
 
 
 if __name__=='__main__':
-    x = 'ABCBDAB'
-    y = 'BDCABA'
+    x = 'XYTFUHJJTUUOH'
+    y = 'YTIDIUBHIU'
     c, b = lcs_length(x, y)
     print_lcs(b, x, len(x), len(y))
     print(np.array(c), '\n', np.array(b))
