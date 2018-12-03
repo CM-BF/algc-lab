@@ -80,13 +80,16 @@ def BFS(s):
         del list[0]
         for v in list:
             visited += 1
-            print(visited)
+            if visited % 10000000:
+                print(visited)
             Q.put((v, str(d+1)))
         del sides[index]
+    print(visited)
 
 
 print(sides[0])
 BFS_begin_time = time.time()
 BFS(sides[0][0])
 end_time = time.time()
+
 print('total time:', end_time-begin_time, '\nBFS time:', end_time-BFS_begin_time)
