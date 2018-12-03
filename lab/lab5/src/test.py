@@ -80,7 +80,7 @@ def BFS(s):
         del list[0]
         for v in list:
             visited += 1
-            if visited % 10000000:
+            if visited % 10000000 == 0:
                 print(visited)
             Q.put((v, str(d+1)))
         del sides[index]
