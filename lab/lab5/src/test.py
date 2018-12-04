@@ -25,7 +25,7 @@ def binary_search_loop(lst,value):
             return mid
     return None
 
-if filename == '../twitter_small.txt':
+if filename != '../twitter_large.txt':
     while(line != ''):
         line = line.strip('\n')
         line = line.split(signal)
@@ -63,27 +63,36 @@ else:
 
 
 def BFS(s):
-    Q.put((s, '0'))
+    index = binary_search_loop(sides, s)
+    Q.put((sides[index], '0'))
+    del sides[index]
     visited = 1
     d = 0
     while not Q.empty():
         tuple = Q.get()
-        u = tuple[0]
+        u = tuple[0][0]
         ud = tuple[1]
         if int(ud) != d:
             print('')
             d = int(ud)
-        index = binary_search_loop(sides, u)
-        if index == None:
-            continue
-        list = sides[index]
+        list = tuple[0]
         del list[0]
         for v in list:
             visited += 1
-            if visited % 10000000 == 0:
-                print(visited)
-            Q.put((v, str(d+1)))
-        del sides[index]
+            # if visited % 1000000 == 0:
+            # print(visited)
+            begin = time.time()
+            index = binary_search_loop(sides, v) # not waste time
+            end = time.time()
+            print(end - begin, end=' ')
+            if index != None:
+                Q.put((sides[index], str(d+1)))
+                begin = time.time()
+                del sides[index]
+                end = time.time()
+                print(end - begin, end=' ')
+            print('')
+        print('Qsize: ', Q.qsize())
     print(visited)
 
 
