@@ -1,14 +1,16 @@
 import linecache
 import queue
 import time
+import sys
 import bintrees
 
 Q = queue.Queue()
 name = ['10scale', '100scale', '1000scale', '10000scale', '100000scale', 'twitter_small', 'twitter_large']
-filename = "../"+ name[5] +".txt"
+filename = "../"+ name[6] +".txt"
 file = open(filename, "r")
 edges = {}
-sides = bintrees.FastRBTree()
+# sides = bintrees.FastRBTree()
+sides = {}
 line = file.readline()
 signal = ' '
 visited = 0
@@ -19,7 +21,9 @@ begin_time = time.time()
 if True:
     if filename == "../twitter_large.txt":
         signal = ','
-    while (line != ''):
+    # lines = file.readlines()
+    print('begin deal')
+    while line != '':
         line = line.strip('\n')
         line = line.split(signal)
         u = line[0]
@@ -29,7 +33,8 @@ if True:
         else:
             sides[u] = [v]
         line = file.readline()
-
+file.close()
+    # del lines
 
     # sides = sorted(sides, key=lambda x: int(x[0]))
     # sides_temp = []
@@ -68,7 +73,7 @@ if True:
 
 def BFS(s):
     global visited
-    Q.put((s, sides[s], '0'))
+    Q.put((s, sides[s], 0))
     del sides[s]
     print('d: ', 0)
     d = 0
@@ -76,16 +81,16 @@ def BFS(s):
         tuple = Q.get()
         u = tuple[0]
         ud = tuple[2]
-        if int(ud) != d:
+        if ud != d:
             print('d: ', ud)
-            d = int(ud)
+            d = ud
         list = tuple[1]
         for v in list:
             visited += 1
             # if visited % 1000000 == 0:
             # print(visited)
             if sides.__contains__(v):
-                Q.put((v, sides[v], str(d+1)))
+                Q.put((v, sides[v], d+1))
                 begin = time.time()
                 del sides[v]
                 end = time.time()
@@ -94,13 +99,25 @@ def BFS(s):
         # print('Qsize: ', Q.qsize())
     print(visited)
 
-
+print(sys.getsizeof(sides))
 BFS_begin_time = time.time()
-while not sides.is_empty():
-    for s in sides.keys():
-        BFS(s)
-        break
-end_time = time.time()
+for s in sides.keys():
+    BFS(s)
+    break
+if filename != "../twitter_large.txt":
+    while not (not sides):
+        for s in sides.keys():
+            BFS(s)
+            break
 
+# c = 0
+# l = 0
+# for key in sides.keys():
+#     import sys
+#     c += 1
+#     l += sys.getsizeof(sides[key])
+# print("key num:", c, "  average size: ", l/c, "sides size: ", sys.getsizeof(sides))
+end_time = time.time()
+import sys
 print('total time:', end_time-begin_time, '\nBFS time:', end_time-BFS_begin_time)
 print('visited: ', visited)
